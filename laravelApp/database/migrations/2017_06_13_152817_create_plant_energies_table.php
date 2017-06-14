@@ -6,6 +6,7 @@ use Illuminate\Database\Migrations\Migration;
 
 class CreatePlantEnergiesTable extends Migration
 {
+
     /**
      * Run the migrations.
      *
@@ -16,7 +17,7 @@ class CreatePlantEnergiesTable extends Migration
 		Schema::create('plant_energies', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('plant_id')->references('id')->on('plants');
-            $table->dateTime('time');
+            $table->dateTime('time')->default(date('Y-m-d H:i:s',time()));
             $table->integer('energy')->unsigned();
         });
     }
