@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use App\User;
 
 class UserController extends Controller
 {
@@ -18,33 +19,57 @@ class UserController extends Controller
         $this->middleware('auth');
     }
     
-    public function login(Request $request){
+    public function getKey(Request $request){
+		if (Auth::attempt(['email'=>$request->email,'password'=>$request->password],true)){
+			return Response::json(Auth::user());
+		}
+		
 	}
     
     public function getUser(Request $request){
+		$response=[];
 		$user = Auth::guard('api')->user();
-		return Response::json($user);
+		if ($user->id != $request->user){
+			$response['error']='Unauthorized';
+		}else{			
+			$response = User::find($user->id);
+		}	
+		return Response::json($response);
 	}
     
-    public function createPlant(Request $request){
+    public function createPlant(Request $request){		
+		$response=[];
 		$user = Auth::guard('api')->user();
-		$plant = $user->plants()->create([
-			'name' => $request->name,
-			'type_id' => $request->type_id,
-			'capacity' => $request->capacity
-		]);		
-		$plantEnergy = $plant->plantEnergies()->create([		
-			'time' => date('Y-m-d H:i:s',time()),
-			'energy' => 0
-		]);
-		return Response::json($plant);
+		if ($user->id != $request->user){
+			$response['error']='Unauthorized';
+		}else{		
+			$user =  User::find($user->id);
+			$plant = $user->plants()->create([
+				'name' => $request->name,
+				'type_id' => $request->type_id,
+				'capacity' => $request->capacity
+			]);		
+			$plantEnergy = $plant->plantEnergies()->create([		
+				'time' => date('Y-m-d H:i:s',time()),
+				'energy' => 0
+			]);
+			$response = $plant;
+		}
+		return Response::json($response);
 	}
     
-    public function getListOfPlants(Request $request) {
-		$user = Auth::guard('api')->user();
-		$plants = $user->plants;		
-		//$plant['current_energy']=$plant->getCurrentEnergy();
-		return Response::json($plants);
+    public function getListOfPlants(Request $request) {		
+		$response=[];
+		$user = Auth::guard('api')->user();		
+		if ($user->id != $request->user){
+			$response['error']='Unauthorized';
+		}else{		
+			$user =  User::find($user->id);
+			$plants = $user->plants;		
+			//$plant['current_energy']=$plant->getCurrentEnergy();
+			$response = $plants;
+		}
+		return Response::json($response);
 	}
 
 }

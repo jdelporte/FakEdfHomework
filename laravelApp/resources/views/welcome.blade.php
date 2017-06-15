@@ -79,10 +79,13 @@
 
             <div class="content">
                 <div class="title m-b-md">
-                    FakEdf
+                   <a href='#' id='testApi'>FakEdf</a>
                 </div>
 
             </div>
         </div>
     </body>
+    
+    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ asset('js/fakedf.js') }}"></script>
 </html>
