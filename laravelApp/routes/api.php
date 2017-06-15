@@ -17,11 +17,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/users', 'UserController@login');	
+//Route::get('/users', 'UserController@login');	
 
  Route::group(['middleware' => ['auth:api']], function () {
 	Route::get('/users/{id}', 'UserController@getUser');	
-	Route::get('/users/{id}/plants', 'UserController@createPlant');
+	Route::post('/users/{id}/plants', 'UserController@createPlant');	
+	Route::get('/users/{id}/plants', 'UserController@getListOfPlants');
 	
 });
 

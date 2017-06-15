@@ -21,6 +21,7 @@ class Plant extends Model
 		}
 		
 		/*public function consume(int e){
+			$plantEnergy = create
 			$this->plantEnergies->fill(new PlantEnergy($this->id,max(getCurrentEnergy()->value-e,0));
 		}
 		

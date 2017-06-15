@@ -19,11 +19,11 @@ class UserController extends Controller
     }
     
     public function login(Request $request){
-		
 	}
     
     public function getUser(Request $request){
-		return Auth::guard('api')->user();
+		$user->Auth::guard('api')->user();
+		return Response::json($user);
 	}
     
     public function createPlant(Request $request){
@@ -36,10 +36,10 @@ class UserController extends Controller
 		return Response::json($plant);
 	}
     
-    public function listOfPlants(Request $request) {
+    public function getListOfPlants(Request $request) {
 		$user = Auth::guard('api')->user();
-		$plants = $user->plants();
-				
+		$plants = $user->plants;
+		return Response::json($plants);
 	}
 
 }
