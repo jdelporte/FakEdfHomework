@@ -27,4 +27,23 @@ class PlantController extends Controller
 		return Response::json($plant);
 	}
 
+	public function produce(Request $request){
+		$user = Auth::guard('api')->user();
+		$plant = Plant::find($request->plant);
+		$plant->produce((int)$request->energy);			
+		
+		$plant = Plant::find($request->plant);	
+		$plantEnergies = $plant->plantEnergies;
+		return Response::json($plant);			
+	}
+	
+	public function consume(Request $request){
+		$user = Auth::guard('api')->user();
+		$plant = Plant::find($request->plant);
+		$plant->consume((int)$request->energy);
+		
+		$plant = Plant::find($request->plant);	
+		$plantEnergies = $plant->plantEnergies;
+		return Response::json($plant);		
+	}
 }

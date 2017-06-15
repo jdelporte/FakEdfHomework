@@ -24,6 +24,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 	Route::post('/users/{user}/plants', 'UserController@createPlant');	
 	Route::get('/users/{user}/plants', 'UserController@getListOfPlants');
 	Route::get('/users/{user}/plants/{plant}', 'PlantController@getPlant');
+	Route::get('/users/{user}/plants/{plant}/produce', 'PlantController@produce');
+	Route::get('/users/{user}/plants/{plant}/consume', 'PlantController@consume');
 	
 });
 

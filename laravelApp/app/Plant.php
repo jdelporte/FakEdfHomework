@@ -27,19 +27,25 @@ class Plant extends Model
 		}
 		
 		public function getCurrentEnergy(){
-			return $this->plantEnergies[count($this->plantEnergies)];
+			return $this->plantEnergies[count($this->plantEnergies)-1];
+		}
+				
+		public function produce($e){
+			$this->plantEnergies()->create([
+				'time' => date('Y-m-d H:i:s',time()),
+				'energy' => min($this->getCurrentEnergy()->energy+$e,$this->capacity)
+			]);
+			
 		}
 		
-		/*public function consume(int e){
-			$plantEnergy = create
-			$this->plantEnergies->fill(new PlantEnergy($this->id,max(getCurrentEnergy()->value-e,0));
-		}
-		
-		public function produce(int e){
-			$this->plantEnergies->fill(new PlantEnergy($this->id,min(getCurrentEnergy()->value+e,$this->capacity));
+		public function consume($e){
+			$this->plantEnergies()->create([
+				'time' => date('Y-m-d H:i:s',time()),
+				'energy' => max($this->getCurrentEnergy()->energy-$e,0)
+			]);
 		}
 		
 		public function getHistoric(){
 			return $this->plantEnergies;
-		}*/
+		}
 }
