@@ -11,6 +11,16 @@ class Plant extends Model
 	    protected $fillable = [
 			'name', 'type_id', 'capacity',
 		];
+				
+
+		public function __construct($attributes = array())  {
+			parent::__construct($attributes);
+			/*$this->plantEnergies()->create([
+				'time' => date('Y-m-d H:i:s',time()),
+				'energy' => 0
+			]);*/
+		}
+
 		
 		public function plantEnergies(){
 			return $this->hasMany(PlantEnergy::class,'plant_id')->orderBy('time','asc');

@@ -22,7 +22,7 @@ class UserController extends Controller
 	}
     
     public function getUser(Request $request){
-		$user->Auth::guard('api')->user();
+		$user = Auth::guard('api')->user();
 		return Response::json($user);
 	}
     
@@ -32,6 +32,10 @@ class UserController extends Controller
 			'name' => $request->name,
 			'type_id' => $request->type_id,
 			'capacity' => $request->capacity
+		]);
+		$plantEnergy = $plant->plantEnergies()->create([		
+			'time' => date('Y-m-d H:i:s',time()),
+			'energy' => 0
 		]);
 		return Response::json($plant);
 	}

@@ -9,8 +9,13 @@ class PlantEnergy extends Model
 		public $timestamps = false;
 		
     	protected $fillable = [
-			'plant_id','time' 'value',
+			'time', 'energy',
 		];
+		
+		protected $hidden = [
+			'id','plant_id'
+		];
+
 		
 		
 }

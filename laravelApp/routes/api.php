@@ -20,9 +20,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //Route::get('/users', 'UserController@login');	
 
  Route::group(['middleware' => ['auth:api']], function () {
-	Route::get('/users/{id}', 'UserController@getUser');	
-	Route::post('/users/{id}/plants', 'UserController@createPlant');	
-	Route::get('/users/{id}/plants', 'UserController@getListOfPlants');
+	Route::get('/users/{user}', 'UserController@getUser');	
+	Route::post('/users/{user}/plants', 'UserController@createPlant');	
+	Route::get('/users/{user}/plants', 'UserController@getListOfPlants');
+	Route::get('/users/{user}/plants/{plant}', 'PlantController@getPlant');
 	
 });
 
