@@ -32,7 +32,7 @@ class UserController extends Controller
 			'name' => $request->name,
 			'type_id' => $request->type_id,
 			'capacity' => $request->capacity
-		]);
+		]);		
 		$plantEnergy = $plant->plantEnergies()->create([		
 			'time' => date('Y-m-d H:i:s',time()),
 			'energy' => 0
@@ -42,7 +42,8 @@ class UserController extends Controller
     
     public function getListOfPlants(Request $request) {
 		$user = Auth::guard('api')->user();
-		$plants = $user->plants;
+		$plants = $user->plants;		
+		//$plant['current_energy']=$plant->getCurrentEnergy();
 		return Response::json($plants);
 	}
 

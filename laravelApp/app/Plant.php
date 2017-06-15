@@ -35,7 +35,7 @@ class Plant extends Model
 			$this->plantEnergies->fill(new PlantEnergy($this->id,max(getCurrentEnergy()->value-e,0));
 		}
 		
-		public function reload(int e){
+		public function produce(int e){
 			$this->plantEnergies->fill(new PlantEnergy($this->id,min(getCurrentEnergy()->value+e,$this->capacity));
 		}
 		
