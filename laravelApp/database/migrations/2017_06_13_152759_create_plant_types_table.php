@@ -18,6 +18,15 @@ class CreatePlantTypesTable extends Migration
             $table->increments('id');
             $table->string('type');
         });
+        
+        DB::table('plant_types')->insert(
+			array(
+				['type' => 'nuclear'],
+				['type' => 'wind'],
+				['type' => 'hydrolic'],
+				['type' => 'thermic'],
+			)
+		);
     }
 
     /**

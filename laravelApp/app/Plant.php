@@ -21,9 +21,13 @@ class Plant extends Model
 			]);*/
 		}
 
-		
+				
 		public function plantEnergies(){
 			return $this->hasMany(PlantEnergy::class,'plant_id')->orderBy('time','asc');
+		}
+		
+		public function type(){
+			return $this->hasOne(PlantEnergy::class,'plant_id');
 		}
 		
 		public function getCurrentEnergy(){

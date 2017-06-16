@@ -17,10 +17,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/users', 'UserController@getKey');	
+//Route::get('/users', 'UserController@getKey');	
 
  Route::group(['middleware' => ['auth:api']], function () {
-	Route::get('/users/{user}', 'UserController@getUser');	
+	Route::get('/users', 'UserController@getUser');	
 	Route::post('/users/{user}/plants', 'UserController@createPlant');	
 	Route::get('/users/{user}/plants', 'UserController@getListOfPlants');
 	Route::get('/users/{user}/plants/{plant}', 'PlantController@getPlant');

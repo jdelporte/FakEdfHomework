@@ -27,13 +27,14 @@ class UserController extends Controller
 	}
     
     public function getUser(Request $request){
-		$response=[];
+		/*$response=[];
 		$user = Auth::guard('api')->user();
 		if ($user->id != $request->user){
 			$response['error']='Unauthorized';
 		}else{			
 			$response = User::find($user->id);
-		}	
+		}	*/
+		$response = Auth::guard('api')->user();
 		return Response::json($response);
 	}
     
