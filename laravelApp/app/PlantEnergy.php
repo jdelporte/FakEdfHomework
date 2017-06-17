@@ -9,7 +9,7 @@ class PlantEnergy extends Model
 		public $timestamps = false;
 		
     	protected $fillable = [
-			'time', 'energy',
+			'time', 'production','wanted_consumption','actual_consumption',
 		];
 		
 		protected $hidden = [

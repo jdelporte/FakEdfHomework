@@ -23,8 +23,7 @@
 							</div> 
 							
 						</div>
-						<div class="col-md-4 col-md-offset-0">
-							
+						<div class="col-md-4 col-md-offset-0">							
 							<div id="plant-info-content"></div>
 						</div>
 					</div>

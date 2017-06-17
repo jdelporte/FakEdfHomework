@@ -18,7 +18,9 @@ class CreatePlantEnergiesTable extends Migration
             $table->increments('id');
             $table->integer('plant_id')->references('id')->on('plants');
             $table->dateTime('time')->default(date('Y-m-d H:i:s',time()));
-            $table->integer('energy')->unsigned();
+            $table->integer('production')->unsigned();
+            $table->integer('wanted_consumption')->unsigned();
+            $table->integer('actual_consumption')->unsigned();
         });
     }
 

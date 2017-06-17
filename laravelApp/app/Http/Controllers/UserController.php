@@ -52,7 +52,9 @@ class UserController extends Controller
 			]);		
 			$plantEnergy = $plant->plantEnergies()->create([		
 				'time' => date('Y-m-d H:i:s',time()),
-				'energy' => 0
+				'production' => 0,
+				'wanted_consumption' => 0,
+				'actual_consumption' => 0,
 			]);
 			$response = $plant;
 		}

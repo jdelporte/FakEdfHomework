@@ -35,17 +35,23 @@ class Plant extends Model
 		}
 				
 		public function produce($e){
+			$curr = $this->getCurrentEnergy();
 			$this->plantEnergies()->create([
 				'time' => date('Y-m-d H:i:s',time()),
-				'energy' => min($this->getCurrentEnergy()->energy+$e,$this->capacity)
+				'production' => min($e,$this->capacity),
+				'wanted_consumption' => min($curr->wanted_consumption,$this->capacity),
+				'actual_consumption' => min($e<=$curr->wanted_consumption?$e:$curr->wanted_consumption,$this->capacity),
 			]);
 			
 		}
 		
 		public function consume($e){
+			$curr = $this->getCurrentEnergy();
 			$this->plantEnergies()->create([
 				'time' => date('Y-m-d H:i:s',time()),
-				'energy' => max($this->getCurrentEnergy()->energy-$e,0)
+				'production' => min($curr->production,$this->capacity),
+				'wanted_consumption' => min($e,$this->capacity),
+				'actual_consumption' => min($curr->production<=$e?$curr->production:$e,$this->capacity),
 			]);
 		}
 		
