@@ -13,7 +13,7 @@
 								<b>Create Plant :</b>
 								<form id="create-plant-form">
 									Name: <input type="text" name="name"/><br/>
-									Type: <select name="type"></select><br/>									
+									Type: <select name="type" id="plant-types-select"></select><br/>									
 									Capacity: <input type="text" name="capacity"/><br/>
 									<button type="button" onclick="createPlant()">create</button>
 								</form>

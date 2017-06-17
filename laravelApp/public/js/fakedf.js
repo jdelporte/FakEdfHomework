@@ -1,6 +1,7 @@
 
 var userId;
 var plantId;
+var plantTypes;
 
 function doRequest(callUrl,token,params,method,successFunc){
 	$.ajax({
@@ -12,7 +13,18 @@ function doRequest(callUrl,token,params,method,successFunc){
 	});
 }
 
-
+function fillPlantTypesSelect(){
+	var callUrl = '/api/planttypes';
+	var method = "GET";
+	doRequest(callUrl,{},{},method,function(data){
+		plantTypes = data;
+		var innerHtml = "";
+		for (var i=0; i<plantTypes.length; i++){
+			innerHtml += "<option value='"+plantTypes[i].id+"' >"+plantTypes[i].type+"</option>";
+		}
+		$('#plant-types-select').html(innerHtml);
+	});
+}
 
 function fillUserInfoContent(){	
 	var callUrl = '/api/users';
@@ -37,7 +49,7 @@ function refreshPlantsList(){
 			var innerHtml = "<b>Plants list :</b><table>";
 			for  (i=0; i<data.length; i++){
 				innerHtml += "<tr><th><a href='javascript:refreshPlantInfo("+data[i]["id"]+")'>"+data[i]["name"]+"</a></th></tr>";			
-				innerHtml += "<tr><th>"+data[i]["type_id"]+"</th></tr>";
+				innerHtml += "<tr><th>"+plantTypes.find(function (d){return d.id ===  data[i]["type_id"];}).type+"</th></tr>";
 				innerHtml += "<tr><th>Capacity:</th><th>"+data[i]["capacity"]+"</th></tr>";
 				innerHtml += "<tr></tr>";
 			}
@@ -55,7 +67,7 @@ function refreshPlantInfo(plantId){
 		//alert(JSON.stringify(data));
 		plantId = data.id;
 		var innerHtml = "<b>Plant: "+data.name+"</b><br/>";
-		innerHtml += "type: "+data.type_id+"<br/>";						
+		innerHtml += "type: "+plantTypes.find(function (d){return d.id ===  data.type_id ;}).type+"<br/>";						
 		innerHtml += "capacity: "+data.capacity+"<br/>";			
 		innerHtml += "consumption: "+data["current_energy"]["actual_consumption"]+"/"+data["current_energy"]["production"]+"<br/>";
 		
@@ -107,7 +119,8 @@ function createPlant(){
 	var method = "POST";
 	var token = $('meta[name="api_token"]').attr('content');
 	var formTab = $("#create-plant-form").serializeArray();
-	var params = {name:formTab[0].value,type_id:1,capacity:formTab[1].value};
+	
+	var params = {name:formTab[0].value,type_id:formTab[1].value,capacity:formTab[2].value};
 	doRequest(callUrl,token,params,method,function(data){
 		refreshPlantsList();
 	});
@@ -115,4 +128,5 @@ function createPlant(){
 
 
 fillUserInfoContent();
+fillPlantTypesSelect();
 
