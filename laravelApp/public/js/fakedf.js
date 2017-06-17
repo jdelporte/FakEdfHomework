@@ -11,14 +11,6 @@ function doRequest(callUrl,token,params,method,successFunc){
 	});
 }
 
-$('#testApi').on('click',function(){
-	var callUrl = '/api/users/1/plants';
-	var method = "GET";
-	var token = $('meta[name="api_token"]').attr('content');
-	doRequest(callUrl,token,{},method,function(data){
-		alert(JSON.stringify(data));
-	});
-});
 
 
 function fillUserInfoContent(){	
@@ -40,15 +32,31 @@ function refreshPlantsList(){
 	var token = $('meta[name="api_token"]').attr('content');	
 	doRequest(callUrl,token,{},method,function(data){
 		//alert(JSON.stringify(data));
-		var innerHtml = "<table>";
-		for  (i=0; i<data.length; i++){
-			innerHtml += "<tr><th>"+data[i]["name"]+"</th></tr>";			
-			innerHtml += "<tr><th>"+data[i]["type_id"]+"</th></tr>";
-			innerHtml += "<tr><th>Capacity:</th><th>"+data[i]["capacity"]+"</th></tr>";
-			innerHtml += "<tr></tr>";
+		if (data.length>0){
+			var innerHtml = "<b>Plants list :</b><table>";
+			for  (i=0; i<data.length; i++){
+				innerHtml += "<tr><th><a href='javascript:refreshPlantInfo("+data[i]["id"]+")'>"+data[i]["name"]+"</a></th></tr>";			
+				innerHtml += "<tr><th>"+data[i]["type_id"]+"</th></tr>";
+				innerHtml += "<tr><th>Capacity:</th><th>"+data[i]["capacity"]+"</th></tr>";
+				innerHtml += "<tr></tr>";
+			}
+			innerHtml += "</table>";
+			$('#plants-list').html(innerHtml);
 		}
-		innerHtml += "</table>";
-		$('#plants-list').html(innerHtml);
+	});
+}
+
+function refreshPlantInfo(plantId){
+	var callUrl = '/api/users/'+userId+'/plants/'+plantId;
+	var method = "GET";
+	var token = $('meta[name="api_token"]').attr('content');	
+	doRequest(callUrl,token,{},method,function(data){
+		//alert(JSON.stringify(data));
+		var innerHtml = "<b>Plant: "+data.name+"</b><br/>";
+		innerHtml += "type: "+data.type_id+"<br/>";						
+		innerHtml += "energy: "+data["current_energy"]["energy"]+"/"+data.capacity+"<br/>";
+		$('#plant-info-content').html(innerHtml);
+
 	});
 }
 

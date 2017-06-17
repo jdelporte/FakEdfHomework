@@ -23,6 +23,7 @@ class PlantController extends Controller
 		$user = Auth::guard('api')->user();
 		$plant = Plant::find($request->plant);
 		$plantEnergies = $plant->plantEnergies;
+		$plant['current_energy']=$plant->getCurrentEnergy();
 		//$plant['energies']=$plantEnergies;
 		return Response::json($plant);
 	}
