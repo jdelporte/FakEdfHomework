@@ -12,13 +12,18 @@
 							<div>
 								<b>Create Plant :</b>
 								<form id="create-plant-form">
-									Name: <input type="text" name="name"/><br/>
-									Type: <select name="type" id="plant-types-select"></select><br/>									
-									Capacity: <input type="text" name="capacity"/><br/>
-									<button type="button" onclick="createPlant()">create</button>
+									<table>
+									<tbody>
+										<tr><th>Name: </th><th><input type="text" name="name"/></th></tr>
+										<tr><th>Type: </th><th><select name="type" id="plant-types-select"></select></th></tr>									
+										<tr><th>Capacity: </th><th><input type="text" name="capacity"/></th></tr>
+										<tr><th><button type="button" onclick="createPlant()">create</button></th><th></th></tr>
+									</tbody>
+									</table>
 								</form>
 							</div>	
 							<div>	
+								<b>Plants list :</b>
 								<div id="plants-list"></div>						
 							</div> 
 							

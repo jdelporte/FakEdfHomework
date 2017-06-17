@@ -32,11 +32,25 @@ class User extends Authenticatable
 	}
 	
 	public function getRatios(){
-		return 0;
+		$plants = $this->plants;
+		$prod = 0;
+		$cons =0;
+		for ($i=0; $i< count($plants); $i++){
+			$curr = $plants[$i]->getCurrentEnergy();
+			$prod += $curr->production;
+			$cons += $curr->actual_consumption;
+		}
+		$response['production']=$prod;
+		$response['consumption']=$cons;
+		return $response;
 	}
 	
 	public function getBalance(){
-		return 0;
+		$plants = $this->plants;
+		for ($i=0; $i< $plants.count; $i++){
+			
+		}
+		
 	}
     
 }

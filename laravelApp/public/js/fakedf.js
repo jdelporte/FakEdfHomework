@@ -18,6 +18,7 @@ function fillPlantTypesSelect(){
 	var method = "GET";
 	doRequest(callUrl,{},{},method,function(data){
 		plantTypes = data;
+		//alert(JSON.stringify(plantTypes));
 		var innerHtml = "";
 		for (var i=0; i<plantTypes.length; i++){
 			innerHtml += "<option value='"+plantTypes[i].id+"' >"+plantTypes[i].type+"</option>";
@@ -46,12 +47,11 @@ function refreshPlantsList(){
 	doRequest(callUrl,token,{},method,function(data){
 		//alert(JSON.stringify(data));
 		if (data.length>0){
-			var innerHtml = "<b>Plants list :</b><table>";
+			var innerHtml = "<table>";
 			for  (i=0; i<data.length; i++){
-				innerHtml += "<tr><th><a href='javascript:refreshPlantInfo("+data[i]["id"]+")'>"+data[i]["name"]+"</a></th></tr>";			
-				innerHtml += "<tr><th>"+plantTypes.find(function (d){return d.id ===  data[i]["type_id"];}).type+"</th></tr>";
-				innerHtml += "<tr><th>Capacity:</th><th>"+data[i]["capacity"]+"</th></tr>";
-				innerHtml += "<tr></tr>";
+				innerHtml += "<tr><th><a class='list-plant-name' href='javascript:refreshPlantInfo("+data[i]["id"]+")'>"+data[i]["name"]+"</a>";			
+				innerHtml += "<div class='list-plant-type'>"+plantTypes.find(function (d){return d.id ===  data[i]["type_id"];}).type+"</div>";
+				innerHtml += "<div class='list-plant-capacity'>Capacity: "+data[i]["capacity"]+"</div></th></tr>"
 			}
 			innerHtml += "</table>";
 			$('#plants-list').html(innerHtml);
@@ -126,6 +126,9 @@ function createPlant(){
 	});
 }
 
+function refreshRatioAndBalance(){
+	//http://127.0.0.1:8000/api/users/1/ratio?api_token=nrjnpNzylizDtr4LmGqQxhQHh4ljtUnXviKaUNXNEVCFFZlJSfA7b9Jr1kAp
+}
 
 fillUserInfoContent();
 fillPlantTypesSelect();

@@ -1,0 +1,21 @@
+
+
+#create-plant-form{
+	border : solid 1px;
+}
+
+
+#plants-list{
+	border : solid 1px;
+}
+
+
+.list-plant-name{
+	float : left;
+}
+.list-plant-type{
+	float : right;
+}
+.list-plant-capacity{
+
+}
