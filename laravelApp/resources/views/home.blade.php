@@ -38,6 +38,10 @@
 						<div class="col-md-4 col-md-offset-0">							
 							<div id="plant-info-content"></div>
 						</div>
+						<div class="col-md-4 col-md-offset-0">	
+							<a href="javascript:runEventStream()">Run Event Stream</a>			
+							<div id="event-stream-content"></div>
+						</div>
 					</div>
 					
                 </div>

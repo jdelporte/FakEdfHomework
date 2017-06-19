@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\User;
+use App\Events\PlantChanged;
+use Sse\SSE;
 
 class UserController extends Controller
 {
+
+	
     /**
      * Create a new controller instance.
      *
@@ -91,6 +95,15 @@ class UserController extends Controller
 			$response = $plants;
 		}
 		return Response::json($response);
+	}
+	
+	public function getEventStream(Request $request){		
+		$user = Auth::guard('api')->user();			
+		
+		$sse = new SSE();
+		$sse->addEventListener('message',new PlantChanged($user));
+		
+		$sse->start();
 	}
 
 }

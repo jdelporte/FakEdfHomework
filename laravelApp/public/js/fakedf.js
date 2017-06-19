@@ -41,6 +41,18 @@ function fillUserInfoContent(){
 	});
 }
 
+function runEventStream(){	
+	var callUrl = '/api/users/'+userId+'/eventstream';
+	var token = $('meta[name="api_token"]').attr('content');
+	var source = new EventSource(callUrl+"?api_token="+token);	
+	source.addEventListener('change',function(e){
+		innerHtml = $('#event-stream-content').html();
+		//innerHtml +=
+		$('#event-stream-content').html(innerHtml+e.data);
+	});
+}
+
+
 function refreshPlantsList(){
 	var callUrl = '/api/users/'+userId+'/plants';
 	var method = "GET";

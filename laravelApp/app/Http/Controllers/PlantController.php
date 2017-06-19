@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\Plant;
+use App\Events\PlantChangedEvent;
 
 class PlantController extends Controller
 {
@@ -35,6 +36,7 @@ class PlantController extends Controller
 		
 		$plant = Plant::find($request->plant);	
 		$plantEnergies = $plant->plantEnergies;
+		
 		return Response::json($plant);			
 	}
 	
@@ -45,6 +47,7 @@ class PlantController extends Controller
 		
 		$plant = Plant::find($request->plant);	
 		$plantEnergies = $plant->plantEnergies;
+				
 		return Response::json($plant);		
 	}
 }
