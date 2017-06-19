@@ -31,7 +31,7 @@ class User extends Authenticatable
 		return $this->hasMany(Plant::class,'owner_id');
 	}
 	
-	public function getRatios(){
+	public function getBalance(){
 		$plants = $this->plants;
 		$prod = 0;
 		$cons =0;
@@ -45,11 +45,23 @@ class User extends Authenticatable
 		return $response;
 	}
 	
-	public function getBalance(){
+	public function getPlantSummary(){
 		$plants = $this->plants;
-		for ($i=0; $i< $plants.count; $i++){
-			
+		$response = [];
+		for ($i=0; $i< count($plants); $i++){
+			$curr = $plants[$i]->getCurrentEnergy();
+			if (array_key_exists($plants[$i]->type_id,$response)){
+				$response[$plants[$i]->type_id]['production']+=$curr->production;
+				$response[$plants[$i]->type_id]['consumption']+=$curr->actual_consumption;
+				
+			}else{
+				$response[$plants[$i]->type_id]=[
+					'production'  => $curr->production,
+					'consumption' => $curr->actual_consumption
+				];
+			}
 		}
+		return $response;
 		
 	}
     

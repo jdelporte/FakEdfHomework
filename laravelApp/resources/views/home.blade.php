@@ -23,6 +23,13 @@
 								</form>
 							</div>	
 							<div>	
+								<b>Plants stats :</b>
+								<div id="plants-stats">
+									<div id="plants-balance"></div>						
+									<div id="plants-summary"></div>						
+								</div>						
+							</div> 
+							<div>	
 								<b>Plants list :</b>
 								<div id="plants-list"></div>						
 							</div> 

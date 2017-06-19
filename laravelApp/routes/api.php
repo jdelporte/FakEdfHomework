@@ -28,7 +28,9 @@ Route::get('/planttypes', 'PlantTypeController@getTypesList');
 	Route::get('/users/{user}/plants/{plant}', 'PlantController@getPlant');
 	Route::post('/users/{user}/plants/{plant}/produce', 'PlantController@produce');
 	Route::post('/users/{user}/plants/{plant}/consume', 'PlantController@consume');
-	Route::get('/users/{user}/ratio', 'UserController@getRatio');	
+	Route::get('/users/{user}/balance', 'UserController@getBalance');	
+	Route::get('/users/{user}/summary', 'UserController@getSummary');	
+	Route::get('/users/{user}/eventstream', 'UserController@getEventStream');
 	
 });
 

@@ -38,12 +38,21 @@ class UserController extends Controller
 		return Response::json($response);
 	}
 	
-	public function getRatio(Request $request){		
+	public function getBalance(Request $request){		
 		$user = Auth::guard('api')->user();
 		if ($user->id != $request->user){
 			$response['error']='Unauthorized';
 		}else{	
-			return Response::json($user->getRatios());
+			return Response::json($user->getBalance());
+		}
+	}
+	
+		public function getSummary(Request $request){		
+		$user = Auth::guard('api')->user();
+		if ($user->id != $request->user){
+			$response['error']='Unauthorized';
+		}else{	
+			return Response::json($user->getPlantSummary());
 		}
 	}
     

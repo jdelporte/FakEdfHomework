@@ -24,6 +24,7 @@ function fillPlantTypesSelect(){
 			innerHtml += "<option value='"+plantTypes[i].id+"' >"+plantTypes[i].type+"</option>";
 		}
 		$('#plant-types-select').html(innerHtml);
+		refreshPlantStats();
 	});
 }
 
@@ -57,6 +58,30 @@ function refreshPlantsList(){
 			$('#plants-list').html(innerHtml);
 		}
 	});
+}
+
+function refreshPlantStats(){	
+	var callUrl = '/api/users/'+userId+'/balance';
+	var method = "GET";
+	var token = $('meta[name="api_token"]').attr('content');
+	var summary;
+	var balance;
+	doRequest(callUrl,token,{},method,function(data){
+		balance = data;
+		innerHtml = "Balance : "+balance["consumption"]+"/"+balance["production"];	
+		$('#plants-balance').html(innerHtml);
+	});
+	callUrl = '/api/users/'+userId+'/summary';
+	doRequest(callUrl,token,{},method,function(data){
+		summary = data
+		innerHtml = "<table class='plants-summary'>";
+		for (var key in summary) {
+			type = plantTypes.find(function (d){return d.id == key;}).type;
+			innerHtml += "<tr><th>"+type+"</th><th>"+summary[key].consumption+"/"+summary[key].production+"</th></tr>";
+		}
+		innerHtml += "</div>";	
+		$('#plants-summary').html(innerHtml);
+	});	
 }
 
 function refreshPlantInfo(plantId){
@@ -100,6 +125,7 @@ function produceEnergy(){
 	var params = {energy:formTab[1].value};
 	doRequest(callUrl,token,params,method,function(data){
 		refreshPlantInfo(formTab[0].value);
+		refreshPlantStats();
 	})
 }
 
@@ -111,6 +137,7 @@ function consumeEnergy(){
 	var params = {energy:formTab[1].value};
 	doRequest(callUrl,token,params,method,function(data){
 		refreshPlantInfo(formTab[0].value);
+		refreshPlantStats();
 	})
 }
 
@@ -126,9 +153,6 @@ function createPlant(){
 	});
 }
 
-function refreshRatioAndBalance(){
-	//http://127.0.0.1:8000/api/users/1/ratio?api_token=nrjnpNzylizDtr4LmGqQxhQHh4ljtUnXviKaUNXNEVCFFZlJSfA7b9Jr1kAp
-}
 
 fillUserInfoContent();
 fillPlantTypesSelect();
