@@ -5,10 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\DB;    
+use Illuminate\Support\Facades\Validator;
 use App\User;
 use App\PlantChangedWorker;
 use App\Events\PlantChanged;
 use Sse\SSE;
+
+use Hash;
+
+
 
 class UserController extends Controller
 {
@@ -21,15 +27,46 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        //$this->middleware('auth');
+       // $this->middleware('auth');
     }
     
     public function getKey(Request $request){
-		if (Auth::attempt(['email'=>$request->email,'password'=>$request->password],true)){
-			return Response::json(Auth::user());
+		$response =[];		
+		if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])){	
+			$response=['error' => 'Authentication failed',
+				];
+		}else{
+			$user = DB::table('users')->where('email',$request->email)->get();
+			$response=['api_token' => $user[0]->api_token];
 		}
-		
+		return Response::json($response);
 	}
+    
+    public function createUser(Request $request){
+		$response = [];			
+		$data = [
+			'name' => $request->name,
+			'email' => $request->email,
+			'password' => $request->password,
+		];
+		if (!Validator::make($data, [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+		])){
+			$response = ['error' => 'Invalid information'];
+		}else{
+			User::create([
+				'name' => $request['name'],
+				'email' => $request['email'],
+				'api_token' => str_random(60),
+				'password' => bcrypt($request['password']),
+			]);
+			$response = ['success' => 'User created'];
+		}   
+		return Response::json($response);     
+	}
+    
     
     public function getUser(Request $request){
 		/*$response=[];
@@ -52,7 +89,7 @@ class UserController extends Controller
 		}
 	}
 	
-		public function getSummary(Request $request){		
+	public function getSummary(Request $request){		
 		$user = Auth::guard('api')->user();
 		if ($user->id != $request->user){
 			$response['error']='Unauthorized';
