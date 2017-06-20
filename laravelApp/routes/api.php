@@ -17,7 +17,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Route::get('/users', 'UserController@getKey');
+Route::get('/gettoken', 'UserController@getKey');
+Route::get('/register', 'UserController@createUser');
 
 Route::get('/planttypes', 'PlantTypeController@getTypesList');	
 

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 use App\User;
+use App\PlantChangedWorker;
 use App\Events\PlantChanged;
 use Sse\SSE;
 
@@ -20,7 +21,7 @@ class UserController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        //$this->middleware('auth');
     }
     
     public function getKey(Request $request){
@@ -103,6 +104,10 @@ class UserController extends Controller
 		$sse = new SSE();
 		$sse->addEventListener('message',new PlantChanged($user));
 		
+		//To handle threading invert comment below
+		
+		//$worker = new PlantChangedWorker($sse);
+		//$worker->start();
 		$sse->start();
 	}
 
