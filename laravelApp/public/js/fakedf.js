@@ -46,9 +46,8 @@ function runEventStream(){
 	var token = $('meta[name="api_token"]').attr('content');
 	var source = new EventSource(callUrl+"?api_token="+token);	
 	source.addEventListener('change',function(e){
-		innerHtml = $('#event-stream-content').html();
-		//innerHtml +=
-		$('#event-stream-content').html(innerHtml+e.data);
+		//innerHtml = $('#event-stream-content').html();
+		//$('#event-stream-content').html(innerHtml+e.data);
 	});
 }
 
