@@ -161,6 +161,7 @@ function createPlant(){
 	
 	var params = {name:formTab[0].value,type_id:formTab[1].value,capacity:formTab[2].value};
 	doRequest(callUrl,token,params,method,function(data){
+		//alert(JSON.stringify(data));
 		refreshPlantsList();
 	});
 }

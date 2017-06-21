@@ -1,0 +1,332 @@
+
+Vous trouvez dans ce document la liste des web services disponibles et comment les utiliser.
+
+\section{Liste des services disponibles}
+
+\begin{lstlisting}
+POST /api/register
+GET  /api/gettoken 
+GET  /api/users
+
+POST /api/users/1/plants
+GET  /api/users/1/plants
+GET  /api/users/1/balance
+GET  /api/users/1/summary
+
+GET  /api/users/1/plants/1
+POST /api/users/1/plants/1/produce
+POST /api/users/1/plants/1/consume
+GET  /api/planttypes
+\end{lstlisting}
+
+
+\section{Inscription et information sur l'utilisateur}
+Il est possible de créer un utilisateur, de récupérer la clef d'authentification de l'api
+ou d'obtenir des informations sur l'utilisateur grâce aux services suivants.
+
+\subsection{Inscription}
+
+\begin{lstlisting}
+POST /api/register 
+  email : adresse@mail.com
+  name : Unnom
+  password : secret
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+{ "success" : "User created" }
+\end{lstlisting}
+ 
+ou 
+
+\begin{lstlisting}
+{ "error" : "Invalid information" }
+\end{lstlisting}
+
+\subsection{Récupération de clef}
+
+\begin{lstlisting}
+GET /api/gettoken 
+  email : adresse@mail.com
+  password  : secret
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+{ "api_token" : "AZE23424TJT345J234J23KZ2J2J2323JJR134JR" }
+\end{lstlisting}
+ 
+ou 
+
+\begin{lstlisting}
+{ "error" : "email or password invalid" }
+\end{lstlisting}
+
+\subsection{Information personnelle}
+
+\begin{lstlisting}
+GET /api/users 
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+{ 
+  "id" : 1,
+  "name" : "UnNom",
+  "email" : "adresse@mail.com",
+  "api_token" : "AZE23424TJT345J234J23KZ2J2J2323JJR134JR"
+}
+\end{lstlisting}
+ 
+ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\section{Services relatifs à la gestion des centrales d'un utilisateur}
+
+\subsection{Création d'une centrale}
+Un utilisateur peut créer une centrale qui lui appartiendra
+
+\begin{lstlisting}
+POST /api/users/1/plants
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+  name : unnomdecentrale
+  type_id : 3
+  capacity : 100
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+{ 
+  "id" : 5,
+  "name" : "unnomdecentrale",
+  "type_id" : 3,
+  "capacity" : 100,
+  "owner_id" : 1
+}
+\end{lstlisting}
+ 
+ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\subsection{Obtention de la liste des centrales d'un utilisateur}
+
+\begin{lstlisting}
+GET  /api/users/1/plants
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+[ 
+  { 
+    "id" : 5,
+    "name" : "unnomdecentrale",
+    "type_id" : 3,
+    "capacity" : 100,
+    "owner_id" : 1
+  },
+  { 
+    "id" : 6,
+    "name" : "uneautrecentrale",
+    "type_id" : 2,
+    "capacity" : 540,
+    "owner_id" : 1
+  }
+]
+\end{lstlisting}
+ 
+ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\subsection{Obtenir la balance de production/consommation des centrales d'un utilisateur}
+
+\begin{lstlisting}
+GET  /api/users/1/balance
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+{ 
+  "production" : 1120,
+  "consumption" : 460
+}
+\end{lstlisting}
+ 
+ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\subsection{Obtenir la répartition de production/consommation par type de centrales d'un utilisateur}
+
+\begin{lstlisting}
+GET  /api/users/1/summary
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+[
+  "1" :
+    { 
+      "production" : 240,
+      "consumption" : 130
+    },
+  "2" :
+    { 
+      "production" : 830,
+      "consumption" : 330
+    }
+]
+\end{lstlisting}
+
+ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+
+\section{Services relatifs à la gestion d'une centrale en particulier}
+
+\subsection{Consultation des détails d'une centrale}
+
+Ce service permet de consulter l'ensemble des informations propres à une centrale,
+notamment sa production et sa consommation d'energie actuelle mais également l'historique.
+
+\begin{lstlisting}
+GET  /api/users/5/plants/4
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+{
+  "id" : 4,
+  "owner_id" : 5,
+  "name" : "unnomdecentrale",
+  "type_id" : 3,
+  "capacity" : 100,
+  "current_energy":
+    {
+      "time" : "2017-06-21 09:50:02",
+      "production" : 60,
+      "wanted_consumption" : 40,
+      "actual_consumption" : 40
+    },
+  "plant_energies" : 
+    [
+      {
+	"time" : "2017-06-21 09:49:59",
+	"production" : 60,
+	"wanted_consumption" : 0,
+	"actual_consumption" : 0
+      },
+      {
+	"time" : "2017-06-21 09:50:02",
+	"production" : 60,
+	"wanted_consumption" : 40,
+	"actual_consumption" : 40
+      }
+    ]
+}
+\end{lstlisting}
+
+ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\subsection{Modification de la production d'une centrale}
+
+\begin{lstlisting}
+POST  /api/users/1/plants/5/produce
+  energy : 60
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne le nouveau détail de la centrale ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\subsection{Modification de la consommation d'une centrale}
+
+\begin{lstlisting}
+POST  /api/users/1/plants/5/consume
+  energy : 40
+  api_token : AZE23424TJT345J234J23KZ2J2J2323JJR134JR
+\end{lstlisting}
+
+retourne le nouveau détail de la centrale ou 
+
+\begin{lstlisting}
+{ "error" : "Unauthorized" }
+\end{lstlisting}
+
+\section{Obtention de la liste des type de centrales}
+
+\begin{lstlisting}
+GET  /api/planttypes
+\end{lstlisting}
+
+retourne
+
+\begin{lstlisting}
+[
+  {
+    "id" : 1,
+    "type" : "nuclear"
+  },
+  {
+    "id" : 2,
+    "type" : "wind"
+  },
+  {
+    "id" : 3,
+    "type" : "hydrolic"
+  },
+  {
+    "id" : 4,
+    "type" : "thermic"
+  }
+]
+\end{lstlisting}
+
+
+% GET  /api/planttypes
+
+% % 
+% % 	Route::post('/users/{user}/plants', 'UserController@createPlant');	
+% % 	Route::get('/users/{user}/plants', 'UserController@getListOfPlants');
+% % 	Route::get('/users/{user}/plants/{plant}', 'PlantController@getPlant');
+% % 	Route::post('/users/{user}/plants/{plant}/produce', 'PlantController@produce');
+% % 	Route::post('/users/{user}/plants/{plant}/consume', 'PlantController@consume');
+% % 	Route::get('/users/{user}/balance', 'UserController@getBalance');	
+% % 	Route::get('/users/{user}/summary', 'UserController@getSummary');	
+% % 	Route::get('/users/{user}/eventstream', 'UserController@getEventStream');
+% %
+% % 	Route::get('/planttypes', 'PlantTypeController@getTypesList');

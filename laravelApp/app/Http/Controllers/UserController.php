@@ -33,7 +33,7 @@ class UserController extends Controller
     public function getKey(Request $request){
 		$response =[];		
 		if (!Auth::attempt(['email' => $request->email, 'password' => $request->password])){	
-			$response=['error' => 'Authentication failed',
+			$response=['error' => 'email or password invalid',
 				];
 		}else{
 			$user = DB::table('users')->where('email',$request->email)->get();
