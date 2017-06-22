@@ -12,6 +12,7 @@ POST /api/users/1/plants
 GET  /api/users/1/plants
 GET  /api/users/1/balance
 GET  /api/users/1/summary
+GET  /api/users/1/eventstream
 
 GET  /api/users/1/plants/1
 POST /api/users/1/plants/1/produce
@@ -204,6 +205,31 @@ ou
 
 \begin{lstlisting}
 { "error" : "Unauthorized" }
+\end{lstlisting}
+
+\subsection{Flux de suivi de modification}
+
+Le service suivat permet d'ouvrir un flux qui push un message 
+lorsqu'un modification a été apportée à l'une des centrales de l'utilisateur.
+
+\begin{lstlisting}
+GET  /api/users/1/eventstream 
+\end{lstlisting}
+
+push des messages de ce format 
+
+\begin{lstlisting}
+{
+  id : 13
+  event : "message"
+  data :
+    [{
+	"time" : "2017-06-21 09:50:02",
+	"production" : 60,
+	"wanted_consumption" : 40,
+	"actual_consumption" : 40
+    }]
+}
 \end{lstlisting}
 
 
